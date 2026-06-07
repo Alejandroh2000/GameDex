@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>GameDex | Formulario Género</title>
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+<body>
+
+<header th:insert="fragmentos/menu :: menu-principal"></header>
+
+<main role="main" style="padding-top: 80px;">
+    <div class="container">
+
+        <div class="card shadow">
+            <h4 class="card-header bg-dark text-white">
+                <i class="bi bi-tag"></i>
+                <strong th:text="${genero != null ? 'Editar Género' : 'Nuevo Género'}">Género</strong>
+            </h4>
+            <div class="card-body">
+
+                <!-- Mensaje de error flash -->
+                <div th:if="${error}" class="alert alert-danger" role="alert">
+                    <span th:text="${error}"></span>
+                </div>
+
+                <form th:action="@{/generos/save}" method="post">
+
+                    <!-- ID oculto para edición -->
+                    <input type="hidden" name="id"
+                           th:value="${genero != null ? genero.id : ''}">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="nombre">Nombre <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="nombre" name="nombre"
+                                       placeholder="Ej: Acción, RPG, Aventura..."
+                                       th:value="${genero != null ? genero.nombre : ''}"
+                                       required="required">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label for="descripcion">Descripción</label>
+                                <textarea class="form-control" id="descripcion" name="descripcion"
+                                          rows="3"
+                                          placeholder="Descripción del género..."
+                                          th:text="${genero != null ? genero.descripcion : ''}"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> Guardar
+                    </button>
+                    <a th:href="@{/generos/index}" class="btn btn-secondary ml-2">
+                        <i class="bi bi-x-circle"></i> Cancelar
+                    </a>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<footer th:insert="fragmentos/footer :: pie-pagina" class="footer mt-4"></footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>

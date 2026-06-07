@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>GameDex | Formulario Videojuego</title>
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+<body>
+
+<header th:insert="fragmentos/menu :: menu-principal"></header>
+
+<main role="main" style="padding-top: 80px;">
+    <hr>
+    <div class="container">
+
+        <div class="card shadow">
+            <h4 class="card-header bg-dark text-white">
+                <i class="bi bi-joystick"></i>
+                <strong th:text="${videojuego != null and videojuego.id != null ? 'Editar Videojuego' : 'Nuevo Videojuego'}">Videojuego</strong>
+            </h4>
+            <div class="card-body">
+
+                
+                <form th:action="@{/videojuegos/save}" method="post"
+                      th:object="${videojuego}">
+
+                    <!-- Errores -->
+                    <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger" role="alert">
+                        Por favor corrija los siguientes errores:
+                        <ul>
+                            <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+                        </ul>
+                    </div>
+
+                    
+                    <input type="hidden" th:field="*{id}">
+
+                    <!-- Fila 1: Título y Descripción -->
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="titulo">Título <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" th:field="*{titulo}"
+                                       id="titulo" placeholder="Título del videojuego" required="required">
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label for="descripcion">Descripción</label>
+                                <input type="text" class="form-control" th:field="*{descripcion}"
+                                       id="descripcion" placeholder="Breve descripción del juego">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fila 2: Género, Desarrollador, Estatus -->
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="genero">Género <span class="text-danger">*</span></label>
+                                <select class="form-control" th:field="*{genero}" id="genero">
+                                    <option value="">-- Seleccionar --</option>
+                                    <option th:each="gen : ${generos}"
+                                            th:value="${gen.id}"
+                                            th:text="${gen.nombre}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="desarrollador">Desarrollador</label>
+                                <select class="form-control" th:field="*{desarrollador}" id="desarrollador">
+                                    <option value="">-- Seleccionar --</option>
+                                    <option th:each="dev : ${desarrolladores}"
+                                            th:value="${dev.id}"
+                                            th:text="${dev.nombre}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="estatus">Estatus</label>
+                                <select class="form-control" th:field="*{estatus}" id="estatus">
+                                    <option th:each="est : ${estatuses}"
+                                            th:value="${est}"
+                                            th:text="${est}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="clasificacion">Clasificación ESRB</label>
+                                <select class="form-control" th:field="*{clasificacion}" id="clasificacion">
+                                    <option value="">-- Seleccionar --</option>
+                                    <option th:each="clas : ${clasificaciones}"
+                                            th:value="${clas}"
+                                            th:text="${clas}"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fila 3: Precio, Año -->
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="precio">Precio ($) <span class="text-danger">*</span></label>
+                                <input type="number" step="0.01" min="0" class="form-control"
+                                       th:field="*{precio}" id="precio"
+                                       placeholder="59.99" required="required">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="anioLanzamiento">Año de Lanzamiento</label>
+                                <input type="number" min="1970" max="2100" class="form-control"
+                                       th:field="*{anioLanzamiento}" id="anioLanzamiento"
+                                       placeholder="2024">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fila 4: Plataformas (ManyToMany - checkboxes) -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>
+                                    <i class="bi bi-display"></i>
+                                    Plataformas
+                                    <small class="text-muted">(selecciona todas las que apliquen)</small>
+                                </label>
+                                <div class="row">
+                                    <div th:each="plat : ${plataformas}" class="col-md-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox"
+                                                   name="idPlataformas"
+                                                   th:value="${plat.id}"
+                                                   th:id="'plat_' + ${plat.id}"
+                                                   th:checked="${videojuego.plataformas != null and videojuego.plataformas.contains(plat)}">
+                                            <label class="form-check-label"
+                                                   th:for="'plat_' + ${plat.id}"
+                                                   th:text="${plat.nombre}">Plataforma</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <!-- Fila 5: Detalles (igual que en formTrip) -->
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <label for="detalles"><strong>Detalles</strong></label>
+                                <textarea class="form-control" th:field="*{detalles}"
+                                          id="detalles" rows="5"
+                                          placeholder="Descripción detallada del videojuego..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> Guardar
+                    </button>
+                    <a th:href="@{/videojuegos/index}" class="btn btn-secondary ml-2">
+                        <i class="bi bi-x-circle"></i> Cancelar
+                    </a>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:insert="fragmentos/footer :: pie-pagina" class="footer mt-4"></footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>

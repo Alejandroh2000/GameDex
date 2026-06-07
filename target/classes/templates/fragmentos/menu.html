@@ -1,0 +1,24 @@
+<nav th:fragment="menu-principal" class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" th:href="@{/}">GameDex</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarPrincipal" aria-controls="navbarPrincipal"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarPrincipal">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/}">Inicio</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/videojuegos/index}">Videojuegos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/generos/index}">Géneros</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/desarrolladores/index}">Desarrolladores</a>
+            </li>
+        </ul>
+    </div>
+</nav>

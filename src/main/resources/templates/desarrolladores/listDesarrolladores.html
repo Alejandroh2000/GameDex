@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>GameDex | Desarrolladores</title>
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+<body class="bg-light">
+
+<header th:insert="fragmentos/menu :: menu-principal"></header>
+
+<div class="container" style="padding-top: 80px;">
+
+    <h4 class="mb-3"><i class="bi bi-people"></i> Listado de Desarrolladores</h4>
+
+    <a th:href="@{/desarrolladores/create}" class="btn btn-primary mb-3">
+        <i class="bi bi-plus-lg"></i> Nuevo Desarrollador
+    </a>
+
+    <!-- Mensaje flash (FlashRedirect) -->
+    <div th:if="${msg != null}" class="alert alert-success">
+        <span th:text="${msg}"></span>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <table class="table table-striped mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>País</th>
+                        <th>Descripción</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="dev : ${desarrolladores}">
+                        <td th:text="${dev.id}"></td>
+                        <td th:text="${dev.nombre}"></td>
+                        <td th:text="${dev.pais}"></td>
+                        <td th:text="${dev.descripcion}"></td>
+                        <td class="text-center">
+                            <a th:href="@{/desarrolladores/edit/{id}(id=${dev.id})}"
+                               class="btn btn-warning btn-sm">
+                                <i class="bi bi-pencil-square"></i> Editar
+                            </a>
+                            <a th:href="@{/desarrolladores/delete/{id}(id=${dev.id})}"
+                               class="btn btn-danger btn-sm"
+                               onclick="return confirm('¿Seguro que deseas eliminar este desarrollador?');">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(desarrolladores)}">
+                        <td colspan="5" class="text-center text-muted py-3">
+                            No hay desarrolladores registrados.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <a th:href="@{/}" class="btn btn-secondary mt-3">
+        <i class="bi bi-arrow-left"></i> Volver al Inicio
+    </a>
+</div>
+
+<footer class="footer mt-4">
+    <div th:insert="fragmentos/footer :: pie-pagina"></div>
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>

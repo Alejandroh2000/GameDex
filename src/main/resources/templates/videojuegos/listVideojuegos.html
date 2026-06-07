@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>GameDex | Videojuegos</title>
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+<body class="bg-light">
+
+<header th:insert="fragmentos/menu :: menu-principal"></header>
+
+<div class="container" style="padding-top: 80px;">
+
+    <h4 class="mb-3"><i class="bi bi-joystick"></i> Catálogo de Videojuegos</h4>
+
+    <a th:href="@{/videojuegos/create}" class="btn btn-primary mb-3">
+        <i class="bi bi-plus-lg"></i> Nuevo Videojuego
+    </a>
+
+    <div th:if="${msg != null}" class="alert alert-success">
+        <span th:text="${msg}"></span>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <table class="table table-striped mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Título</th>
+                        <th>Género</th>
+                        <th>Desarrollador</th>
+                        <th>Precio</th>
+                        <th>Año</th>
+                        <th>Clasificación</th>
+                        <th>Plataformas</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="juego : ${videojuegos}">
+                        <td th:text="${juego.id}"></td>
+                        <td th:text="${juego.titulo}"></td>
+                        <td>
+                            <span class="badge badge-success"
+                                  th:text="${juego.genero != null ? juego.genero.nombre : 'N/A'}"></span>
+                        </td>
+                        <td th:text="${juego.desarrollador != null ? juego.desarrollador.nombre : 'N/A'}"></td>
+                        <td th:text="'$' + ${juego.precio}"></td>
+                        <td th:text="${juego.anioLanzamiento}"></td>
+                        <td>
+                            <span class="badge badge-warning"
+                                  th:text="${juego.clasificacion != null ? juego.clasificacion : '-'}"></span>
+                        </td>
+                        <td>
+                            <span th:each="plat : ${juego.plataformas}"
+                                  class="badge badge-info mr-1"
+                                  th:text="${plat.nombre}"></span>
+                            <span th:if="${juego.plataformas == null or #lists.isEmpty(juego.plataformas)}"
+                                  class="text-muted">-</span>
+                        </td>
+                        <td class="text-center" style="white-space: nowrap;">
+                            <!-- Ver -->
+                            <a th:href="@{/videojuegos/view/{id}(id=${juego.id})}"
+                               class="btn btn-info btn-sm">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <!-- Editar -->
+                            <a th:href="@{/videojuegos/edit/{id}(id=${juego.id})}"
+                               class="btn btn-warning btn-sm">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <!-- Eliminar -->
+                            <a th:href="@{/videojuegos/delete/{id}(id=${juego.id})}"
+                               class="btn btn-danger btn-sm"
+                               onclick="return confirm('¿Seguro que deseas eliminar este videojuego?');">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(videojuegos)}">
+                        <td colspan="9" class="text-center text-muted py-3">
+                            No hay videojuegos registrados.
+                            <a th:href="@{/videojuegos/create}">Agrega el primero</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <a th:href="@{/}" class="btn btn-secondary mt-3">
+        <i class="bi bi-arrow-left"></i>
+    </a>
+</div>
+
+<footer class="footer mt-4">
+    <div th:insert="fragmentos/footer :: pie-pagina"></div>
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>
