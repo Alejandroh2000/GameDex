@@ -22,7 +22,7 @@ public class Desarrollador {
     private String pais;
     private String descripcion;
 
-    // Un desarrollador tiene MUCHOS videojuegos (@OneToMany)
+    
     @OneToMany(mappedBy = "desarrollador", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Videojuego> videojuegos;
 

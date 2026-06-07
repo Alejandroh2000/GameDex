@@ -29,13 +29,13 @@ public class GeneroController {
         return "generos/listGeneros";
     }
 
-    // FORMULARIO CREAR - GET /generos/create
+    
     @GetMapping("/create")
     public String crear() {
         return "generos/formGenero";
     }
 
-    // GUARDAR - POST /generos/save
+    
     @PostMapping("/save")
     public String guardar(Genero genero, BindingResult result, RedirectAttributes attributes) {
         if (result.hasErrors()) {
@@ -49,7 +49,7 @@ public class GeneroController {
         return "redirect:/generos/index";
     }
 
-    // FORMULARIO EDITAR - GET /generos/edit/{id}
+    
     @GetMapping("/edit/{id}")
     public String editar(@PathVariable Integer id, Model model) {
         Genero genero = generoService.buscaPorId(id);
@@ -57,7 +57,7 @@ public class GeneroController {
         return "generos/formGenero";
     }
 
-    // ELIMINAR - GET /generos/delete/{id}
+    
     @GetMapping("/delete/{id}")
     public String eliminar(@PathVariable Integer id, RedirectAttributes attributes) {
         generoService.eliminar(id);
@@ -65,7 +65,7 @@ public class GeneroController {
         return "redirect:/generos/index";
     }
 
-    // VER DETALLE - GET /generos/view/{id}
+    
     @GetMapping("/view/{id}")
     public String verDetalle(@PathVariable Integer id, Model model) {
         Genero genero = generoService.buscaPorId(id);

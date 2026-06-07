@@ -20,8 +20,7 @@ public class Plataforma {
     private String nombre;
     private String fabricante;
 
-    // Muchas plataformas tienen MUCHOS videojuegos (@ManyToMany)
-    // mappedBy indica que Videojuego es el dueño de la relación
+    
     @ManyToMany(mappedBy = "plataformas", fetch = FetchType.LAZY)
     private List<Videojuego> videojuegos;
 

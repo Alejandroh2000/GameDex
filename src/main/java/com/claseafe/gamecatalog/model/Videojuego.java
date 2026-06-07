@@ -33,12 +33,12 @@ public class Videojuego {
     private String imagen = "no-image.png";
     private String detalles;
 
-    // Muchos videojuegos pertenecen a UN género (@ManyToOne -> genera @OneToMany en Genero)
+    
     @ManyToOne
     @JoinColumn(name = "idGenero")
     private Genero genero;
 
-    // Muchos videojuegos pertenecen a UN desarrollador (@ManyToOne -> genera @OneToMany en Desarrollador)
+   
     @ManyToOne
     @JoinColumn(name = "idDesarrollador")
     private Desarrollador desarrollador;
